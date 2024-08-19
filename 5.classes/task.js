@@ -33,30 +33,30 @@ class Magazine extends PrintEditionItem {
 };
 
 class Book extends PrintEditionItem {
-    constructor (name, releaseDate, pagesCount, author) {
+    constructor (author, name, releaseDate, pagesCount) {
         super(name,releaseDate, pagesCount);
-        this.type = 'book';
         this.author = author;
+        this.type = 'book';
     };
 };
 
 class NovelBook extends Book {
-    constructor (name, releaseDate, pagesCount, author) {
-        super(name,releaseDate, pagesCount, author);
+    constructor (author, name, releaseDate, pagesCount) {
+        super(author, name,releaseDate, pagesCount);
         this.type = 'novel';
     };
 };
 
 class FantasticBook extends Book {
-    constructor (name, releaseDate, pagesCount, author) {
-        super(name, releaseDate, pagesCount, author);
+    constructor (author, name, releaseDate, pagesCount) {
+        super(author, name, releaseDate, pagesCount);
         this.type = 'fantastic';
     };
 };
 
 class DetectiveBook extends Book {
-    constructor (name, releaseDate, pagesCount, author) {
-        super(name, releaseDate, pagesCount, author);
+    constructor (author, name, releaseDate, pagesCount) {
+        super(author, name, releaseDate, pagesCount);
         this.type = 'detective';
     };
 };
@@ -70,8 +70,8 @@ class Library {
     };
 
 addBook(book) {
-    if (this.state > 30) {
-    this.books += book;
+    if (book.state > 30) {
+    this.books.push(book);
     };
 };
 
@@ -90,31 +90,31 @@ giveBookByName(bookName) {
 
 
 
-class Stusent {
-    constructor (name) {
+class Student {
+    constructor(name) {
         this.name = name;
         this.marks = {};
     };
 
-    setSubject(subjectName) {
-        this.subject = subjectName;
+    addMark(mark, subject) {
+        if (mark >= 2 && mark <= 5) {
+            if(!this.marks?.[subject]) {
+                this.marks[subject] = [];
+            }
+            this.marks[subject].push(mark);
+        }
     };
 
-    addMark() {
-        this.marks = {  'физика': [4,5,4,5],
-                        'химия': [3, 4],
-                        'литература': [4],
-                        'информатика': [5, 5, 5]
-        };
+    getAverageBySubject(subject) {
+        if (this.marks?.[subject]) {
+            return this.marks[subject].reduce((a,b) => a + b) / this.marks[subject].length;
+        }else return 0;
+    };
 
-        if (this.marks < 2 && this.marks > 5) {
-            
-        };
-
-        if (this?.marks) {
-            
-        }
-    }
+    getAverage() {
+        let sum = 0;
+        let keys = Object.keys(this.marks);
+        keys.forEach(item => sum += this.getAverageBySubject(item));
+        return sum / keys.length || 0;
+    };
 };
-
-const student = new Stusent ('Oleg Nik');
