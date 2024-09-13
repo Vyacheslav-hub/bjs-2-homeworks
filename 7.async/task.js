@@ -14,7 +14,6 @@ class AlarmClock {
         // Проверка на дублирование времени звонка
         if (this.alarmCollection.some(alarm => alarm.time === time)) {
             console.warn('Уже присутствует звонок на это же время');
-            return;
         }
 
         // Добавление нового звонка в коллекцию со свойствами time, callback и canCall
@@ -28,14 +27,7 @@ class AlarmClock {
 
     // Метод для удаления звонка по времени
     removeClock(time) {
-        const initialLength = this.alarmCollection.length;
         this.alarmCollection = this.alarmCollection.filter(alarm => alarm.time !== time);
-
-        if (this.alarmCollection.length < initialLength) {
-            console.log(`Звонок на ${time} удален`);
-        } else {
-            console.warn(`Звонок на ${time} не найден`);
-        }
     }
 
     // Метод для получения текущего времени в формате HH:MM
