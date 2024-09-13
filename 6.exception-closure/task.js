@@ -50,3 +50,11 @@ function getTriangle(a,b,c) {
         };
     };
 };
+
+const validTriangle = getTriangle(3, 4, 5);
+// console.log(validTriangle.perimeter);  // 12
+// console.log(validTriangle.area);       // 6.000
+
+const invalidTriangle = getTriangle(1, 2, 10);
+// console.log(invalidTriangle.perimeter);  // Ошибка! Треугольник не существует
+// console.log(invalidTriangle.area);       // Ошибка! Треугольник не существует
