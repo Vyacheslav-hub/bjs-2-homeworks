@@ -28,7 +28,6 @@ function calculateTotalMortgage(percent, contribution, amount, countMonths) {
     if (principal <= 0) return 0;
 
     const monthlyPayment = principal * (interestRate + (interestRate / (((1 + interestRate) ** countMonths) - 1)));
-    const totalPayment = +(monthlyPayment * countMonths).toFixed(2);
-    return totalPayment;
+    return +(monthlyPayment * countMonths).toFixed(2);
 }
 (calculateTotalMortgage(10, 0, 50000, 12));
