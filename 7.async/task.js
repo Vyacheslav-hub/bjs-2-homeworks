@@ -1,79 +1,77 @@
 class AlarmClock {
+    intervalId = null;
     constructor() {
-        this.alarmCollection = []; // Коллекция звонков
-        this.intervalId = null; // Таймер для проверки времени
+        this.alarmCollection = [];
     }
 
-    // Метод для добавления нового звонка
-    addClock(time, callback) {
-        // Проверка на наличие обязательных аргументов
-        if (!time || !callback) {
+    addClock (clock, callback) {
+        if (!(clock && callback)) {
             throw new Error('Отсутствуют обязательные аргументы');
         }
 
-        // Проверка на дублирование времени звонка
-        if (this.alarmCollection.some(alarm => alarm.time === time)) {
-            console.warn('Уже присутствует звонок на это же время');
+        if (this.alarmCollection.some(item => item.time === clock)) {
+                console.warn('Уже присутствует звонок на это же время');
+                // return;
         }
 
-        // Добавление нового звонка в коллекцию со свойствами time, callback и canCall
         this.alarmCollection.push({
-            time,       // Время звонка
-            callback,   // Коллбэк функция
-            canCall: true // Изначально можно вызывать коллбэк
-        });
-        console.log(`Звонок на ${time} добавлен`);
+            callback: callback,
+            time: clock,
+            canCall: true,
+        })
     }
 
-    // Метод для удаления звонка по времени
-    removeClock(time) {
-        this.alarmCollection = this.alarmCollection.filter(alarm => alarm.time !== time);
+    removeClock (time) {
+       const clock = time;
+        this.alarmCollection = this.alarmCollection.filter((item) => item.time !== clock);
     }
 
-    // Метод для получения текущего времени в формате HH:MM
-    getCurrentFormattedTime() {
-        const now = new Date();
-        return now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    getCurrentFormattedTime () {
+       return new Date().toLocaleTimeString("ru-RU", {
+           hour: "2-digit",
+           minute: "2-digit",
+           }
+       );
     }
 
-    // Метод для запуска будильника
-    start() {
-        if (this.intervalId !== null) {
-            console.log("Таймер уже запущен");
-            return;
-        }
+    start () {
+        if (this.intervalId !== null) return;
 
         this.intervalId = setInterval(() => {
-            const currentTime = this.getCurrentFormattedTime();
-
-            this.alarmCollection.forEach(alarm => {
-                if (alarm.time === currentTime && alarm.canCall) {
-                    alarm.callback();   // Вызов функции-коллбэка
-                    alarm.canCall = false; // После срабатывания коллбэка блокируем его повторный вызов
+            this.alarmCollection.forEach((item) => {
+                if (item.time === this.getCurrentFormattedTime() && item.canCall === true) {
+                    item.canCall = false;
+                    item.callback();
                 }
-            });
-        }, 1000); // Проверка каждую секунду
+            })
+        }, 1000);
     }
 
-    // Метод для остановки проверки звонков
-    stop() {
-        if (this.intervalId !== null) {
-            clearInterval(this.intervalId);
-            this.intervalId = null;
-            console.log("Таймер остановлен");
-        }
+    stop () {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
     }
 
-    // Метод для сброса звонков, чтобы они могли сработать снова
-    resetAllCalls() {
-        this.alarmCollection.forEach(alarm => alarm.canCall = true);
-        console.log("Все звонки сброшены и могут сработать снова");
+    resetAllCalls () {
+        this.alarmCollection.forEach((item) => item.canCall = true);
     }
 
-    // Метод для удаления всех звонков
-    clearAlarms() {
-        this.stop(); // Останавливаем текущий интервал
-        this.alarmCollection = []; // Очищаем коллекцию звонков
-        
+    clearAlarms () {
+        this.stop();
+        this.alarmCollection = [];
     }
+
 }
+function hi () {
+    console.log('hi')
+}
+const alarm1 = new AlarmClock();
+const now = alarm1.getCurrentFormattedTime();
+alarm1.addClock('09:00', hi);
+alarm1.addClock('09:00', hi);
+alarm1.addClock('09:01', hi);
+alarm1.addClock('00:09', hi);
+alarm1.addClock(now, hi);
+alarm1.start();
+console.log(alarm1.alarmCollection);
+
